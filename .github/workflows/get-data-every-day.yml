@@ -1,0 +1,30 @@
+name: Get data every day from nycdb
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: "30 6 * * *"
+jobs:
+  get-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run
+        run: |
+          bash run.sh
+        env:
+            PG_HOST: ${{ secrets.PG_HOST }}
+            PG_USER: ${{ secrets.PG_USER }}
+            PG_PASS: ${{ secrets.PG_PASS }}
+            PG_DB: ${{ secrets.PG_DB }}
+      - name: Commit updates
+        uses: EndBug/add-and-commit@v4
+        with:
+          author_name: bot
+          author_email: bot@example.com
+          message: "Update"
+          add: "*.csv"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
