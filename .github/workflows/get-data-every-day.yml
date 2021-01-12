@@ -4,16 +4,17 @@ on:
     branches:
       - master
   schedule:
-    - cron: "30 6 * * *"
+    - cron: "0 5 * * *"
 jobs:
   get-data:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name : Install postgresql
+        run : sudo apt-get install postgresql postgresql-contrib 
       - name: Run
-        run: |
-          bash run.sh
+        run: bash run.sh
         env:
             PG_HOST: ${{ secrets.PG_HOST }}
             PG_USER: ${{ secrets.PG_USER }}
