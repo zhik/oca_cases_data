@@ -17,6 +17,8 @@ function query_and_export_to_csv() {
     QUERY=`cat $QUERY_FILE`
 
     PGPASSWORD=$PG_PASS psql -h $PG_HOST -U $PG_USER -d $PG_DB -c "COPY ($QUERY) TO stdout CSV DELIMITER ',' quote '\"' force quote * HEADER"  > $LOCAL_FILE
+
+    echo "query: $QUERY was saved to $LOCAL_FILE"
 }
 
 query_and_export_to_csv "oca_cases" "query.sql"
